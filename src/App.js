@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   image: '',
   rare: 'normal',
   trunfo: false,
+  hasTrunfo: false,
   disabled: true,
 };
 
@@ -22,17 +23,20 @@ class App extends React.Component {
 
     this.state = {
       ...INITIAL_STATE,
+      cardList: [],
     };
+
     this.onInputChange = this.onInputChange.bind(this);
     this.buttonDisabled = this.buttonDisabled.bind(this);
+    this.confirmTrunfo = this.confirmTrunfo.bind(this);
     this.saveState = this.saveState.bind(this);
   }
 
   onInputChange(event) {
     const { name } = event.target;
     let { value } = event.target;
-    this.setState({ [name]: value }, () => this.buttonDisabled());
     value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+    this.setState({ [name]: value }, () => this.buttonDisabled());
   }
 
   buttonDisabled() {
@@ -50,13 +54,43 @@ class App extends React.Component {
     this.setState({ disabled: true });
   }
 
+  confirmTrunfo() {
+    const { cardList } = this.state;
+    const verifyTrunfo = cardList.some((card) => card.trunfo === true);
+    if (verifyTrunfo === true) {
+      this.setState({ hasTrunfo: true });
+    }
+  }
+
   saveState() {
-    this.setState({ ...INITIAL_STATE });
+    const { name, description, attr1, attr2, attr3,
+      image, rare, trunfo } = this.state;
+    const newCard = {
+      name,
+      description,
+      attr1,
+      attr2,
+      attr3,
+      image,
+      rare,
+      trunfo,
+    };
+    this.setState((prevState) => ({
+      cardList: [...prevState.cardList, newCard],
+      name: '',
+      description: '',
+      attr1: '0',
+      attr2: '0',
+      attr3: '0',
+      image: '',
+      rare: 'normal',
+      trunfo: false,
+    }), this.confirmTrunfo);
   }
 
   render() {
     const { name, description, attr1, attr2, attr3,
-      image, rare, trunfo, disabled } = this.state;
+      image, rare, trunfo, disabled, hasTrunfo } = this.state;
     return (
       <div>
         <h1>Tryunfo</h1>
@@ -69,6 +103,7 @@ class App extends React.Component {
           cardImage={ image }
           cardRare={ rare }
           cardTrunfo={ trunfo }
+          hasTrunfo={ hasTrunfo }
           isSaveButtonDisabled={ disabled }
           onInputChange={ this.onInputChange }
           onSaveButtonClick={ this.saveState }
