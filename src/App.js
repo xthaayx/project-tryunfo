@@ -1,7 +1,6 @@
 import React from 'react';
 import Form from './components/Form';
 import Card from './components/Card';
-import { toHaveDisplayValue } from '@testing-library/jest-dom/dist/matchers';
 
 const SUM_MAX = 210;
 const NUMBER_MAX = 90;
@@ -37,7 +36,7 @@ class App extends React.Component {
   handleClick(cardName, trunfo) {
     const { cardList } = this.state;
     this.setState({
-      cardList: cardList.filter(({ name }) => name !== cardName ),
+      cardList: cardList.filter(({ name }) => name !== cardName),
       hasTrunfo: !trunfo,
     });
   }
