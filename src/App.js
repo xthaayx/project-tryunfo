@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from './components/Form';
 import Card from './components/Card';
+import { toHaveDisplayValue } from '@testing-library/jest-dom/dist/matchers';
 
 const SUM_MAX = 210;
 const NUMBER_MAX = 90;
@@ -26,10 +27,19 @@ class App extends React.Component {
       cardList: [],
     };
 
+    this.handleClick = this.handleClick.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.buttonDisabled = this.buttonDisabled.bind(this);
     this.confirmTrunfo = this.confirmTrunfo.bind(this);
     this.saveState = this.saveState.bind(this);
+  }
+
+  handleClick(cardName, trunfo) {
+    const { cardList } = this.state;
+    this.setState({
+      cardList: cardList.filter(({ name }) => name !== cardName ),
+      hasTrunfo: !trunfo,
+    });
   }
 
   onInputChange(event) {
@@ -130,6 +140,16 @@ class App extends React.Component {
               cardRare={ card.rare }
               cardTrunfo={ card.trunfo }
             />
+            <button
+              type="button"
+              id="delete-button"
+              data-testid="delete-button"
+              onClick={ () => this.handleClick(
+                card.name, card.description, card.trunfo,
+              ) }
+            >
+              Excluir
+            </button>
           </div>
         ))}
       </div>
