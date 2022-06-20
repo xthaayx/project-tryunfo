@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from './components/Form';
 import Card from './components/Card';
+import Filters from './components/Filters';
 
 const SUM_MAX = 210;
 const NUMBER_MAX = 90;
@@ -99,7 +100,7 @@ class App extends React.Component {
 
   render() {
     const { name, description, attr1, attr2, attr3,
-      image, rare, trunfo, disabled, hasTrunfo, cardList } = this.state;
+      image, rare, trunfo, disabled, hasTrunfo, cardList, filterName } = this.state;
     return (
       <div>
         <h1>Tryunfo</h1>
@@ -127,30 +128,34 @@ class App extends React.Component {
           cardRare={ rare }
           cardTrunfo={ trunfo }
         />
-        {cardList.map((card) => (
-          <div key={ card.name }>
-            <Card
-              cardName={ card.name }
-              cardDescription={ card.description }
-              cardAttr1={ card.attr1 }
-              cardAttr2={ card.attr2 }
-              cardAttr3={ card.attr3 }
-              cardImage={ card.image }
-              cardRare={ card.rare }
-              cardTrunfo={ card.trunfo }
-            />
-            <button
-              type="button"
-              id="delete-button"
-              data-testid="delete-button"
-              onClick={ () => this.handleClick(
-                card.name, card.description, card.trunfo,
-              ) }
-            >
-              Excluir
-            </button>
-          </div>
-        ))}
+        <Filters
+          onInputChange={ this.onInputChange }
+        />
+        { cardList.filter((card) => card.name.includes(filterName))
+          .map((card) => (
+            <div key={ card.name }>
+              <Card
+                cardName={ card.name }
+                cardDescription={ card.description }
+                cardAttr1={ card.attr1 }
+                cardAttr2={ card.attr2 }
+                cardAttr3={ card.attr3 }
+                cardImage={ card.image }
+                cardRare={ card.rare }
+                cardTrunfo={ card.trunfo }
+              />
+              <button
+                type="button"
+                id="delete-button"
+                data-testid="delete-button"
+                onClick={ () => this.handleClick(
+                  card.name, card.description, card.trunfo,
+                ) }
+              >
+                Excluir
+              </button>
+            </div>
+          ))}
       </div>
     );
   }
