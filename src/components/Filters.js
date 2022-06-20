@@ -17,6 +17,30 @@ class Filters extends React.Component {
             id="filterName"
           />
         </label>
+        <label htmlFor="filterRare">
+          Filtar por raridade
+          <select
+            onChange={ onInputChange }
+            data-testid="rare-filter"
+            name="filterRare"
+            id="filterRare"
+          >
+            <option value="todas" checked>Todas</option>
+            <option value="normal">Normal</option>
+            <option value="raro">Raro</option>
+            <option value="muito raro">Muito Raro</option>
+          </select>
+        </label>
+        <label htmlFor="filterTrunfo">
+          Filtrar por trunfo
+          <input
+            onChange={ onInputChange }
+            data-testid="trunfo-filter"
+            type="checkbox"
+            name="filterTrunfo"
+            id="filterTrunfo"
+          />
+        </label>
       </form>
     );
   }

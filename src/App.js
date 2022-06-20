@@ -25,6 +25,9 @@ class App extends React.Component {
     this.state = {
       ...INITIAL_STATE,
       cardList: [],
+      filterName: '',
+      filterRare: 'todas',
+      filterTrunfo: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -100,7 +103,8 @@ class App extends React.Component {
 
   render() {
     const { name, description, attr1, attr2, attr3,
-      image, rare, trunfo, disabled, hasTrunfo, cardList, filterName } = this.state;
+      image, rare, trunfo, disabled, hasTrunfo, cardList, filterName,
+      filterRare, filterTrunfo } = this.state;
     return (
       <div>
         <h1>Tryunfo</h1>
@@ -131,7 +135,11 @@ class App extends React.Component {
         <Filters
           onInputChange={ this.onInputChange }
         />
-        { cardList.filter((card) => card.name.includes(filterName))
+        {cardList.filter((card) => card.name.includes(filterName))
+          .filter((card) => (filterRare !== 'todas'
+            ? card.rare === filterRare : card))
+          .filter((card) => (filterTrunfo === true
+            ? card.trunfo === true : card))
           .map((card) => (
             <div key={ card.name }>
               <Card
